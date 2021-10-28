@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from "express";
-import { createPatientHandler } from "../controller/patient.controller";
+import { createPatientHandler, getMedDetailsIdFromMapHandler, getPatientMedDetailsHandler, updatePatientMedicalDetailsHandler } from "../controller/patient.controller";
 import {
   createDoctorHandler,
   getOneDoctorHandler,
@@ -20,6 +20,8 @@ import adminRouter from "./adminRoutes";
 import { createScheduleSchema } from "../schema/schedule.schema";
 import { addPatientToScheduleHandler, createScheduleHandler, getSchedulesHandler, removePatientFromScheduleHandler } from "../controller/schedule.controller";
 import { createAppointmentHandler, deleteAppointmentHandler, getAppointmentsOfUserHandler } from "../controller/appointment.controller";
+import { createMedicalDetailsHandler, getMedicalDetailsHandler } from "../controller/medicalDetails.controller";
+import { createPatientMedDataMapHandler } from "../controller/patientMedDataMap.controller";
 
 export default function (app: Express) {
   app.use(express.json());
@@ -32,6 +34,19 @@ export default function (app: Express) {
     validateRequest(createPatientSchema),
     createPatientHandler
   );
+
+  //get medical details
+  app.get("/api/patients/medicalDetails/:email", getPatientMedDetailsHandler);
+
+  //create medical detals map
+  app.post("/api/patients/medicalDetailsMap", createPatientMedDataMapHandler);
+
+  //obtain the medical data ID from the map
+  app.get("/api/patients/getMedDetailsIdFromMap/:id", getMedDetailsIdFromMapHandler);
+
+  //update medical_details of the patient with the key in the map
+  app.put("/api/patients/:patient", updatePatientMedicalDetailsHandler)
+
   app.post(
     "/api/newDoctor",
     validateRequest(createDoctorSchema),
@@ -71,9 +86,19 @@ export default function (app: Express) {
   //delete an appointment when the appointment id is given
   app.delete("/api/appointments/:id", deleteAppointmentHandler)
 
-
-
   app.get("/api/appointments/:patient", getAppointmentsOfUserHandler);
+
+
+  //Create medical_details of a patient
+  app.post("/api/medicalDetails", createMedicalDetailsHandler)
+
+  //get medical details of a patient from the medical details collection
+  app.get("/api/medicalDetails/:mid", getMedicalDetailsHandler)
+
+
+
+
+
 
   // get password and email from the client and send access, refresh tokens
   // Login has two endpoints for doctor and patient

@@ -1,4 +1,4 @@
-import { object, string, ref ,number} from "yup";// for validating objects
+import { object, string, ref, number } from "yup";// for validating objects
 
 export const createPatientSchema = object({
     body: object({
@@ -23,13 +23,7 @@ export const createPatientSchema = object({
             .min(10, "invalid mobile number")
             .max(10, "invalid mobile number"),
         // TODO : validate not required fields if entered
-        homeAddress: string().notRequired(),
-        weight: string().notRequired(),
-        height: string().notRequired(),
-        allergies: string().notRequired(),
-        diseases: string().notRequired(),
-        treatmentHistory: string().notRequired(),
-
+        medicalDetails: string().notRequired(),
     }),
 });
 

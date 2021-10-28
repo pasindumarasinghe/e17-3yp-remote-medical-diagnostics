@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import Config from "../config/default";
 import bcrypt from "bcrypt";
 //bcrypt uses a symmetric-key block cipher called Blowfish for hashing passwords 
-import { ObjectId } from "bson";
 
 export interface PatientDocument extends mongoose.Document {
     email: string,
@@ -12,13 +11,7 @@ export interface PatientDocument extends mongoose.Document {
     gender: string,
     mobileNo: string,
     homeAddress?: string,
-    weight?: number,
-    height?: number,
-    allergies?: string,
-    diseases?: string,// existing medical conditions
-    treatmentHistory?: { docId: ObjectId, date: Date, prescription: string },// details of previous sessions
-    createdAt: Date,
-    updatedAt: Date,
+    medicalDetails: string,
     comparePassword(enteredPassword: string): Promise<boolean>;
 }
 
@@ -30,11 +23,7 @@ const PatientSchema = new mongoose.Schema({
     gender: { type: String, required: true },
     mobileNo: { type: String, required: false },
     homeAddress: { type: String, required: false },
-    weight: { type: Number, required: false },
-    height: { type: Number, required: false },
-    allergies: { type: String, required: false },
-    diseases: { type: String, required: false },
-    treatmentHistory: { type: { docId: String, date: Date, prescription: String }, required: false },
+    medicalDetails: { type: String, required: false },
 },
     { timestamps: true }
 );
